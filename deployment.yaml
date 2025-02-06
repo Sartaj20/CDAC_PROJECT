@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: animal-app-deployment
+spec:
+  replicas: 2 # Adjust as needed
+  selector:
+    matchLabels:
+      app: animal-app
+  template:
+    metadata:
+      labels:
+        app: animal-app
+    spec:
+      containers:
+        - name: animal-app
+          image: animal-app-image # Replace with your actual image name/tag
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app
+          resources: # Add resource requests and limits
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+        - name: mongo
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: animal_db
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: pass
+          resources: # Add resource requests and limits for the database
+            requests:
+              cpu: 200m
+              memory: 512Mi
+            limits:
+              cpu: 1
+              memory: 1Gi
+      volumes:
+        - name: app-volume
+          persistentVolumeClaim: # Use a PVC for persistent storage
+            claimName: animal-app-pvc # Create this PVC separately

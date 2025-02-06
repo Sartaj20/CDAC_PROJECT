@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: animal-app-service
+spec:
+  selector:
+    app: animal-app
+  ports:
+    - protocol: TCP
+      port: 5000 # External port
+      targetPort: 5000 # Container port
+  type: LoadBalancer #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
