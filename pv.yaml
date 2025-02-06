@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: animal-app-pv  # Must match the name you used for the PV
+spec:
+  capacity:
+    storage: 2Gi  # Must be at least what the PVC requests
+  accessModes:
+    - ReadWriteOnce  # Must include all access modes the PVC requests
+  persistentVolumeReclaimPolicy: Retain # or Delete
+#  storageClassName: standard # if you use storage class
+  hostPath: # Or use other provisioner like awsElasticBlockStore, nfs, etc.
+    path: /data/animal-app-data # Path on the host node. Make sure this directory exists.
+    type: DirectoryOrCreate

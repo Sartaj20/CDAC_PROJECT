@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: animal-app
-          image: animal-app-image # Replace with your actual image name/tag
+          image: sartaj1212/todo # Replace with your actual image name/tag
           ports:
             - containerPort: 5000
           volumeMounts:

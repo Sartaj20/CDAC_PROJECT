@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: animal-app-pvc
+  name: animal-app-pvc  # This must match the ClaimName in your Deployment
 spec:
   accessModes:
-    - ReadWriteOnce # Or ReadWriteMany if needed, check your cloud provider's support
+    - ReadWriteOnce  # Must match the PV's access modes
   resources:
     requests:
-      storage: 1Gi
+      storage: 1Gi  # Must be less than or equal to the PV's capacity
