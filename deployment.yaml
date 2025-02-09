@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: animal-app-deployment
 spec:
-  replicas: 2 # Adjust as needed
+  replicas: 1  # Single pod with Flask and MongoDB
   selector:
     matchLabels:
       app: animal-app
@@ -13,20 +13,6 @@ spec:
         app: animal-app
     spec:
       containers:
-        - name: animal-app
-          image: sartaj1212/todo # Replace with your actual image name/tag
-          ports:
-            - containerPort: 5000
-          volumeMounts:
-            - name: app-volume
-              mountPath: /app
-          resources: # Add resource requests and limits
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
         - name: mongo
           image: mongo:latest
           ports:
@@ -38,14 +24,28 @@ spec:
               value: root
             - name: MONGO_INITDB_ROOT_PASSWORD
               value: pass
-          resources: # Add resource requests and limits for the database
+          volumeMounts:
+            - name: mongo-storage
+              mountPath: /data/db
+          resources:
             requests:
               cpu: 200m
               memory: 512Mi
             limits:
               cpu: 1
               memory: 1Gi
+        - name: animal-app
+          image: sartaj1212/todopy  # Replace with your actual Flask app image
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MONGO_URI
+              value: "mongodb://root:pass@localhost:27017/animal_db?authSource=admin"
+ 
       volumes:
-        - name: app-volume
-          persistentVolumeClaim: # Use a PVC for persistent storage
-            claimName: animal-app-pvc # Create this PVC separately
+
+        - name: mongo-storage
+          emptyDir: {}
+ #         persistentVolumeClaim:
+  #          claimName: mongo-pvc
+

@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson import ObjectId
-
+import os
 app = Flask(__name__)
 
-client = MongoClient(host='test_mongodb',port=27017, username='root', password='pass',authSource="admin")
-db = client.mytododb
+mongo_uri = os.getenv("MONGO_URI", "mongodb://root:pass@localhost:27017/animal_db")
+client = MongoClient(mongo_uri)
+db = client["animal_db"]
 tasks_collection = db.tasks
 
 @app.route('/')
